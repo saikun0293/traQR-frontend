@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.btn {
+  @apply font-body flex items-center px-4 py-5 text-xl font-light rounded-lg;
+}
+
+.logo-title {
+  @apply text-3xl tracking-widest font-extralight;
+}
+
+.sidebar {
+  @apply h-screen fixed z-40 right-0 top-0 transition-all duration-700 bg-myRed;
+}
+
+.hamburger {
+  @apply absolute top-7 right-5 md:hidden z-50 w-7 h-7 cursor-pointer;
+}

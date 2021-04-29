@@ -1,6 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router";
 import login from "../components/LoginPage";
-import home from "../views/Home.vue";
+import home from "../views/Home";
+import StudentHome from "../components/StudentHome";
+import FacultyHome from "../components/FacultyHome";
 
 const routes = [
   {
@@ -12,6 +14,16 @@ const routes = [
     path: "/",
     name: "home",
     component: home,
+    children: [
+      {
+        path: "student",
+        component: StudentHome,
+      },
+      {
+        path: "faculty",
+        component: FacultyHome,
+      },
+    ],
   },
 ];
 

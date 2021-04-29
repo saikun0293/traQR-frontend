@@ -3,22 +3,21 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "App",
-  data() {
-    return {
-      isAuthenticated: false,
-    };
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+    }),
   },
   mounted() {
-    if (!this.isAuthenticated) this.$router.replace("/login");
+    if (!this.user) {
+      this.router.replace("/login");
+    }
   },
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
-#app {
-  font-family: "Roboto", sans-serif;
-}
-</style>
+<style></style>

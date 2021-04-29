@@ -1,16 +1,28 @@
 <template>
-  <div class="top">
+  <div class="top font-body">
     <span class="logo">
       <LoginSVG name="logo" class="logo" />
     </span>
-    <span class="title">traQR</span>
+    <span class="logo-title ml-5 text-myBlack">traQR</span>
   </div>
   <div class="bottom">
     <div class="left">
       <LoginSVG name="loginContent" />
-      <div class="login-btns">
-        <button @click="authenticateUser()" type="submit">
-          Log in with
+      <div class="flex my-10">
+        <button
+          class="btn mr-5 bg-myRed text-white"
+          @click="authenticateUser('student')"
+          type="submit"
+        >
+          <div>Student Login</div>
+          <loginSVG name="googleLogo" />
+        </button>
+        <button
+          class="btn bg-myBlue text-white"
+          @click="authenticateUser()"
+          type="submit"
+        >
+          <div class="btn-text">Faculty Login</div>
           <loginSVG name="googleLogo" />
         </button>
       </div>
@@ -22,41 +34,37 @@
 </template>
 
 <script>
-import LoginSVG from "./modules/LoginSVG";
+import LoginSVG from "./modules/login/LoginSVG";
 import firebase from "firebase/app";
 import "firebase/auth";
+
 export default {
   name: "login",
   components: {
     LoginSVG,
   },
   methods: {
-    authenticateUser() {
+    authenticateUser(type) {
       let provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({
-        hd: "vitstudent.ac.in",
-      });
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          console.log(result);
-          this.$router.replace("/");
-        })
-        .catch((err) => console.log(err));
+
+      if (type === "student") {
+        provider.setCustomParameters({
+          login_hint: "example@vitstudent.ac.in",
+          hd: "vitstudent.ac.in",
+        });
+      } else if (type === "faculty") {
+        provider.setCustomParameters({
+          login_hint: "example@vit.ac.in",
+        });
+      }
+
+      firebase.auth().signInWithPopup(provider);
     },
   },
 };
 </script>
 
 <style scoped>
-.title {
-  letter-spacing: 3px;
-  font-size: 30px;
-  font-weight: 200;
-  margin-left: 20px;
-}
-
 .top {
   display: flex;
   align-items: center;
@@ -74,32 +82,5 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   margin-top: 25vh;
   grid-row-gap: 30px;
-}
-
-button {
-  font-family: "Roboto", sans-serif;
-  font-size: 25px;
-  font-weight: 200;
-  background: #f8f8f8;
-  border: none;
-  padding: 15px 10px;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  width: 250px;
-}
-
-button:hover {
-  background: #e6e6e6;
-  cursor: pointer;
-}
-
-@media screen and (max-width: 719px) {
-  button {
-    margin-left: 50%;
-    transform: translate(-50%, 0);
-  }
 }
 </style>
