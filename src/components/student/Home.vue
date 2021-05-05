@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import Logo from "./modules/login/LoginSVG";
+import Logo from "./modules/login/LoginUtils";
 
 import firebase from "firebase/app";
 import "firebase/auth";

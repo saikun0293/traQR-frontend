@@ -1,39 +1,37 @@
 const state = {
   user: {},
-  token: "",
-  isStudent: false,
-};
+  constraints: {}
+}
 
 const mutations = {
-  AUTHENTICATE_USER(state, payload) {
-    state.user = payload.user;
+  AUTHENTICATE_USER (state, payload) {
+    state.user = payload
   },
-  SET_CONSTRAINTS(state, payload) {
-    state.token = payload.idToken;
-    state.isStudent = payload.isStudent;
+  SET_CONSTRAINTS (state, payload) {
+    state.constraints = payload
   },
-  SIGN_OUT_USER(state) {
-    state.user = {};
-    state.token = "";
-  },
-};
+  SIGN_OUT_USER (state) {
+    state.user = {}
+    state.constraints = {}
+  }
+}
 
 const actions = {
-  authenticateUser(context, payload) {
-    context.commit("AUTHENTICATE_USER", payload);
+  authenticateUser (context, payload) {
+    context.commit('AUTHENTICATE_USER', payload)
   },
-  setConstraints(context, payload) {
-    context.commit("SET_CONSTRAINTS", payload);
+  setConstraints (context, payload) {
+    context.commit('SET_CONSTRAINTS', payload)
   },
-  signOutUser(context) {
-    context.commit("SIGN_OUT_USER");
-  },
-};
+  signOutUser (context) {
+    context.commit('SIGN_OUT_USER')
+  }
+}
 
 const authModule = {
   state,
   mutations,
-  actions,
-};
+  actions
+}
 
-export default authModule;
+export default authModule

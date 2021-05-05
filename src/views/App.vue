@@ -20,4 +20,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+::-webkit-scrollbar {
+  background-color: #454851;
+  border-radius: 20px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 20px;
+}
+</style>

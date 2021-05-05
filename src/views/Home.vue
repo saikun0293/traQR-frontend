@@ -5,12 +5,9 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
-  computed: mapState({
-    isStudent: (state) => state.auth.user.isStudent,
-  }),
   methods: mapActions({
     authUser: "authenticateUser",
     constraints: "setConstraints",
@@ -20,6 +17,8 @@ export default {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         const { uid, displayName, email, photoURL } = user;
+
+        console.log("User details from firebase", user.getIdToken());
 
         const data = {
           uid,
@@ -54,7 +53,7 @@ export default {
 
         console.log("Authenticated users data :: ", data);
 
-        if (data?.isStudent) {
+        if (isStudent) {
           this.$router.replace("/student");
         } else {
           this.$router.replace("/faculty");

@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 .btn {
-  @apply font-body flex items-center px-4 py-5 text-xl font-light rounded-lg;
+  @apply font-body flex items-center px-4 py-5 text-xl font-light rounded-lg cursor-pointer focus:outline-none;
 }
 
 .logo-title {
@@ -15,7 +15,7 @@
 }
 
 .sidebar {
-  @apply h-screen fixed z-40 right-0 top-0 transition-all duration-700 bg-myRed;
+  @apply h-screen z-40 transition-all duration-700 bg-myRed;
 }
 
 .hamburger {
