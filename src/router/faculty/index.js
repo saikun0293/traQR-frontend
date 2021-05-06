@@ -8,7 +8,10 @@ import FacultyGeneral from '@/components/faculty/subject/General'
 import FacultyQRCode from '@/components/faculty/subject/QRCode'
 import FacultyChatRoom from '@/components/faculty/subject/ChatRoom'
 
+import Faculty from '@/components/faculty/Faculty'
+
 export {
+  Faculty,
   FacultyChatRoom,
   FacultyDoubts,
   FacultyGeneral,

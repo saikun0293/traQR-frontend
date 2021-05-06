@@ -27,7 +27,7 @@
       </router-link>
     </div>
     <!-- Logout -->
-    <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2">
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
       <div class="mb-4">
         Logged in as {{ isStudent ? "Student" : "Professor" }}
       </div>

@@ -10,7 +10,7 @@
       <div class="my-3 font-bold text-xl">{{ course?.courseName }}</div>
       <div
         :class="[
-          isStudent ? 'bg-myRed' : 'bg-myBlue',
+          course.isStudent ? 'bg-myRed' : 'bg-myBlue',
           'px-4 py-1 text-white rounded-md',
         ]"
       >

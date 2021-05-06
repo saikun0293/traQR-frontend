@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import login from '../components/LoginPage'
 import home from '../views/Home'
 import {
+  Student,
   StudentHome,
   StudentGeneral,
   StudentQRCode,
@@ -10,6 +11,7 @@ import {
   StudentSubject
 } from './student'
 import {
+  Faculty,
   FacultyChatRoom,
   FacultyDoubts,
   FacultyGeneral,
@@ -33,18 +35,22 @@ const routes = [
     children: [
       {
         path: 'student',
-        component: StudentHome,
+        component: Student,
         children: [
+          {
+            path: '',
+            component: StudentHome
+          },
           {
             path: 'stats',
             component: StudentStats
           },
           {
-            path: 'subject',
+            path: ':id',
             component: StudentSubject,
             children: [
               {
-                path: 'general',
+                path: '',
                 component: StudentGeneral
               },
               {
@@ -61,8 +67,12 @@ const routes = [
       },
       {
         path: 'faculty',
-        component: FacultyHome,
+        component: Faculty,
         children: [
+          {
+            path: '',
+            component: FacultyHome
+          },
           {
             path: 'stats',
             component: FacultyStats
@@ -76,11 +86,11 @@ const routes = [
             component: FacultyNewClass
           },
           {
-            path: 'subject',
+            path: ':id',
             component: FacultySubject,
             children: [
               {
-                path: 'general',
+                path: '',
                 component: FacultyGeneral
               },
               {

@@ -7,7 +7,9 @@ module.exports = {
         myRed: '#ff2e63',
         myBlack: '#252a34',
         myGrey: '#eaeaea',
-        myBlue: '#08d9d6'
+        myBlue: '#08d9d6',
+        myMildBlack: '#454851',
+        myLightBlack: '#636E74'
       },
       fontFamily: {
         body: ['Poppins']

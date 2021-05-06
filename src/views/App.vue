@@ -31,4 +31,9 @@ export default {
   background-color: white;
   border-radius: 20px;
 }
+
+input,
+button {
+  outline: none;
+}
 </style>

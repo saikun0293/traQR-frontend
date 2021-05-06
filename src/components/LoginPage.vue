@@ -31,7 +31,7 @@
           </button>
           <button
             class="btn bg-myBlue text-white"
-            @click="authenticateUser()"
+            @click="authenticateUser('faculty')"
             type="submit"
           >
             <div class="btn-text">Faculty Login</div>
@@ -113,7 +113,7 @@ export default {
         // console.log("Response for creating new user from backend", res);
       }
 
-      this.$router.replace("/");
+      this.$router.push("/");
     },
   },
 };
