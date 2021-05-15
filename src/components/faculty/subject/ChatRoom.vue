@@ -92,6 +92,7 @@
         placeholder="Add a message"
       />
       <button
+        v-if="enabled"
         class="bg-myBlue w-10 p-3"
         @click="onSubmitMessage()"
         :disabled="toggleButton"
@@ -116,6 +117,7 @@ export default {
   mounted() {
     this.getPreviousChats();
   },
+  props: ["enabled"],
   computed: {
     ...mapState({
       user: (state) => state.auth.user,

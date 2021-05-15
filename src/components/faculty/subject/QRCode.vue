@@ -23,7 +23,10 @@
         <label for="to">To Time</label>
         <input v-model="to" type="time" name="to" id="to" />
       </div>
-      <button class="bg-myBlue text-white px-10 py-2 rounded-lg">
+      <button
+        @click="startClass()"
+        class="bg-myBlue text-white px-10 py-2 rounded-lg"
+      >
         Start Class
       </button>
     </div>
@@ -41,7 +44,7 @@ export default {
       user: (state) => state.auth.user,
     }),
   },
-  setup() {
+  setup(props, { emit }) {
     const route = useRoute();
 
     const qrcode = ref(null);
@@ -55,7 +58,35 @@ export default {
       }
     };
 
-    return { generateQR, qrcode, from, to };
+    const startClass = () => {
+      emit("enable", null);
+      setTimer();
+    };
+
+    const setTimer = () => {
+      Date.prototype.addHours = function(h) {
+        this.setHours(this.getHours() + h);
+        return this;
+      };
+
+      const countdown = new Date().addHours(1);
+      // const countdown = new Date(new Date().getTime() + 5000);
+      console.log("countdown in 5 seconds", countdown);
+
+      const stop = setInterval(function() {
+        let now = new Date().getTime();
+        console.log("second passed");
+        let distance = countdown - now;
+
+        if (distance < 0) {
+          emit("disable", null);
+          console.log("done with 5 seconds");
+          clearInterval(stop);
+        }
+      }, 1000);
+    };
+
+    return { generateQR, qrcode, from, to, startClass };
   },
 };
 </script>

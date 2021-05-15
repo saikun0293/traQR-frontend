@@ -7,7 +7,9 @@
     <!-- bottom subject -->
     <div class="py-5 grid justify-items-center">
       <div class="text-sm text-gray-500">{{ course?.facultyName }}</div>
-      <div class="my-3 font-bold text-xl">{{ course?.courseName }}</div>
+      <div class="my-3 font-bold text-xl text-center">
+        {{ course?.courseName }}
+      </div>
       <div
         :class="[
           course.isStudent ? 'bg-myRed' : 'bg-myBlue',

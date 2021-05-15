@@ -34,10 +34,10 @@
         </button>
       </div>
     </div>
-    <div
+    <!-- QR Code -->
+    <!-- <div
       class="flex w-2/3 mx-auto my-10 justify-around bg-myBlue m-auto p-5 rounded-lg"
     >
-      <!-- QR Code -->
       <div class="bg-white w-60 h-60 rounded-lg relative">
         <div class="">
           <img v-if="qrlink !== null" :src="qrlink" alt="qr-code" />
@@ -50,7 +50,6 @@
           Generate QR Code
         </button>
       </div>
-      <!-- QR Code details -->
       <div class="bg-white rounded-lg w-80">
         <div class="text-2xl text-myBlue text-center my-6">
           QR Code Details
@@ -76,7 +75,7 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

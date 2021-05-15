@@ -35,7 +35,11 @@
         >Chat Room</router-link
       >
     </div>
-    <router-view />
+    <router-view
+      :enabled="toggle"
+      @enable="toggle = true"
+      @disable="toggle = false"
+    />
   </div>
 </template>
 
@@ -56,6 +60,7 @@ export default {
   setup() {
     const route = useRoute();
     const subject = ref({});
+    const toggle = ref(false);
 
     const stopWatch = watchEffect(async () => {
       const res = await api.post("/courses/courseID", {
@@ -66,7 +71,7 @@ export default {
       stopWatch();
     });
 
-    return { subject };
+    return { subject, toggle };
   },
 };
 </script>

@@ -21,20 +21,28 @@
       </div>
     </div>
     <div class="w-2/3 bg-myMildBlack mx-auto mt-7 rounded-lg p-5">
-      <div class="grid grid-cols-3 place-items-center text-myBlue">
+      <div class="grid grid-cols-3 place-items-center text-myBlue pb-3">
         <div>Registration Number</div>
         <div>Student Name</div>
         <div>Status</div>
       </div>
-      <div class="h-80 overflow-y-auto">
+      <div class="h-80 overflow-y-auto border-t-2 border-myGrey">
         <div
-          class="grid grid-cols-3"
+          class="grid grid-cols-3 place-items-center my-6"
           v-for="student in attendance"
           :key="student.registrationNumber"
         >
           <div>{{ student?.registrationNumber }}</div>
           <div>{{ student.studentName ? student.studentName : "Student" }}</div>
-          <div>{{ student.attendanceStatus }}</div>
+          <div
+            :class="[
+              student.attendanceStatus === 'Present'
+                ? 'text-green-500'
+                : 'text-myRed',
+            ]"
+          >
+            {{ student.attendanceStatus }}
+          </div>
         </div>
       </div>
     </div>
@@ -43,7 +51,6 @@
 
 <script>
 import { ref, watch } from "vue";
-// import { useStore } from 'vuex';
 import api from "@/api";
 import { useRoute } from "vue-router";
 export default {
@@ -62,7 +69,20 @@ export default {
         console.log("date data", data);
         try {
           const res = await api.post("/faculty/attendance", data);
-          attendance.value = res?.attendanceList;
+          const students = res.data.attendanceList;
+
+          for (let i = 0; i < students.length; i++) {
+            const res1 = await api.post("/getDetails", {
+              regNo: students[i].registrationNumber,
+              isStudent: true,
+            });
+            students[i].studentName = res1.data.studentName;
+          }
+
+          console.log("Final students", students);
+          console.log("Attendance data", res);
+
+          attendance.value = students;
         } catch (error) {
           console.log("Error while obtaining attendance on a date", error);
         }
@@ -74,4 +94,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+::-webkit-scrollbar {
+  background-color: white;
+  border-radius: 20px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #454851;
+  border-radius: 20px;
+}
+</style>

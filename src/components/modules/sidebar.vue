@@ -6,7 +6,8 @@
     ]"
   >
     <!-- Profile -->
-    <div class="absolute top-20 left-1/2 transform -translate-x-1/2">
+    <!-- absolute top-20 left-1/2 transform -translate-x-1/2 -->
+    <div class="mt-10">
       <img
         :src="user.photoURL"
         alt="profile-pic"
@@ -14,9 +15,17 @@
       />
       <div class="my-2 font-extralight">Welcome</div>
       <div class="my-2 font-bold text-3xl">{{ user.displayName }}</div>
+      <div>
+        <div
+          v-if="isStudent"
+          class="bg-white text-myRed py-1 rounded-md w-28 m-auto"
+        >
+          19BCE0293
+        </div>
+      </div>
     </div>
     <!-- Links -->
-    <div class="flex flex-col mt-80">
+    <div class="flex flex-col mt-8">
       <router-link
         v-for="(link, index) in links"
         :key="index"
