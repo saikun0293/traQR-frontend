@@ -2,17 +2,23 @@
   <div class="w-4/5 bg-myMildBlack m-auto p-5 rounded-lg">
     <!-- display messages -->
     <div class="h-l2 px-10 overflow-y-auto">
-      <div v-for="message in messages" :key="message.id">
+      <div v-for="(message, index) in messages" :key="message.id">
         <div
           :class="[
             message.isStudent ? 'text-myRed' : 'text-myBlue',
-            'text-xs my-2',
+            'text-xs my-2 flex items-center',
           ]"
         >
-          {{ message?.username }}
+          <span>{{ message?.username }}</span>
         </div>
         <div class="bg-myLightBlack relative rounded-lg p-4 py-5">
           <div class="text-sm">{{ message?.message }}</div>
+          <div
+            @click="markDoubt(message.id, message.markedDoubt, index)"
+            class="absolute -right-10 top-1/2"
+          >
+            <Icon :name="message.markedDoubt ? 'tickDark' : 'tickLight'" />
+          </div>
           <div
             :class="[
               message.isStudent ? 'bg-myRed' : 'bg-myBlue',
@@ -101,6 +107,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Icon from "@/components/faculty/facIcons";
+// import api from "@/api";
 
 import { mapState } from "vuex";
 
@@ -184,6 +191,7 @@ export default {
           message: this.newMessage,
           comments: [],
           isStudent: false,
+          markedDoubt: false,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
@@ -227,6 +235,31 @@ export default {
           "Error while trying to add comment to message in firestore",
           error
         );
+      }
+    },
+    async markDoubt(id, marked, index) {
+      if (!marked) {
+        try {
+          const messageRef = firebase
+            .firestore()
+            .collection("chatrooms")
+            .doc(`${this.$route.params.id}`)
+            .collection("messages")
+            .doc(id);
+          messageRef.update({
+            markedDoubt: true,
+          });
+
+          this.messages[index].markedDoubt = true;
+
+          //TODO: Add doubts later
+          // const res = api.post("/doubts",{})
+        } catch (error) {
+          console.log(
+            "Error while trying to add comment to message in firestore",
+            error
+          );
+        }
       }
     },
   },

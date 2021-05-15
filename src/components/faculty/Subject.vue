@@ -1,11 +1,15 @@
 <template>
   <div class="font-body bg-myBlack text-white">
     <!-- Add subject title -->
-    <div class="text-center text-3xl py-8 font-extralight">
-      Java Programming
+    <div class="text-center text-3xl pt-5 pb-2 font-extralight">
+      {{ subject?.courseName }}
+    </div>
+    <div class="text-center my-2 font-bold text-myBlue">
+      <div>{{ subject?.facultyName }}</div>
+      <div>{{ subject?.slot }}</div>
     </div>
     <!-- Add links here -->
-    <div class="grid grid-cols-3 place-items-center py-10">
+    <div class="grid grid-cols-3 place-items-center py-5">
       <router-link
         :to="`/faculty/${this.$route.params.id}/`"
         :class="[
@@ -36,6 +40,10 @@
 </template>
 
 <script>
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import api from "@/api";
+
 export default {
   computed: {
     blueLine() {
@@ -45,8 +53,20 @@ export default {
       else return 0;
     },
   },
-  mounted() {
-    console.log(this.$route);
+  setup() {
+    const route = useRoute();
+    const subject = ref({});
+
+    const stopWatch = watchEffect(async () => {
+      const res = await api.post("/courses/courseID", {
+        courseID: route.params.id,
+      });
+      console.log(res);
+      subject.value = res.data.info;
+      stopWatch();
+    });
+
+    return { subject };
   },
 };
 </script>

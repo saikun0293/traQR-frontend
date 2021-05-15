@@ -7,6 +7,7 @@
           type="date"
           name="date"
           id="date"
+          v-model="date"
           class="px-4 py-2 rounded-md text-gray-700"
         />
       </div>
@@ -26,15 +27,50 @@
         <div>Status</div>
       </div>
       <div class="h-80 overflow-y-auto">
-        <div></div>
+        <div
+          class="grid grid-cols-3"
+          v-for="student in attendance"
+          :key="student.registrationNumber"
+        >
+          <div>{{ student?.registrationNumber }}</div>
+          <div>{{ student.studentName ? student.studentName : "Student" }}</div>
+          <div>{{ student.attendanceStatus }}</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref, watch } from "vue";
+// import { useStore } from 'vuex';
+import api from "@/api";
+import { useRoute } from "vue-router";
 export default {
-  mounted() {},
+  setup() {
+    // const store = useStore();
+    const route = useRoute();
+    const attendance = ref(null);
+
+    const date = ref(null);
+
+    watch(date, async () => {
+      if (date.value) {
+        // Attendance
+        const courseId = route.params.id;
+        const data = { courseID: courseId, date: date.value };
+        console.log("date data", data);
+        try {
+          const res = await api.post("/faculty/attendance", data);
+          attendance.value = res?.attendanceList;
+        } catch (error) {
+          console.log("Error while obtaining attendance on a date", error);
+        }
+      }
+    });
+
+    return { date, attendance };
+  },
 };
 </script>
 

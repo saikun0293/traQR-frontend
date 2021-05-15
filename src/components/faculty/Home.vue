@@ -15,14 +15,15 @@
         </div>
         <!-- Course Cards -->
         <div
+          v-if="subjects"
           class="grid overflow-y-auto h-l3dot5 w-11/12 m-auto mt-20 gap-y-8 lg:grid-cols-2 xl:grid-cols-3"
         >
           <!-- Card -->
           <Card
-            v-for="(course, index) in courses"
-            :key="index"
-            :course="course"
-            @click="$router.push(`/faculty/${course.cid}`)"
+            v-for="subject in subjects"
+            :key="subject?.courseID"
+            :course="subject"
+            @click="$router.push(`/faculty/${subject?.courseID}`)"
             class="cursor-pointer"
           />
         </div>
@@ -39,55 +40,52 @@
 
 <script>
 import Card from "@/components/modules/card";
-
-import { generateIdenticon } from "@/generate";
-import { sha224 } from "js-sha256";
-
-import { mapActions, mapState } from "vuex";
-
+import { useStore } from "vuex";
+import { ref, toRefs, watchEffect } from "vue";
 import api from "@/api";
+import { generateIdenticon } from "@/generate";
 
 export default {
   components: { Card },
   emits: ["click"],
-  computed: mapState({
-    user: (state) => state.auth.user,
-    isStudent: (state) => state.auth.constraints.isStudent,
-  }),
-  data() {
-    return {
-      show: false,
-      courses: [],
-    };
-  },
-  mounted() {
-    this.getCourses();
-  },
-  methods: {
-    ...mapActions({
-      signOutUser: "signOutUser",
-    }),
-    async getCourses() {
-      let courses = [];
+  setup() {
+    const { isLoggedIn, user } = toRefs(useStore().state.auth);
+    const subjects = ref([]);
 
-      for (let i = 0; i < 10; i++) {
-        const obj = {
-          cid: sha224(this.user.uid + "Java Programming" + "C1+TC1"),
-          courseName: "Java Programming",
-          slot: "C1+TC1",
-        };
+    console.log(isLoggedIn.value);
 
-        obj.identicon = generateIdenticon(obj.courseName);
-        obj.isStudent = false; //for color rendering
-
-        courses.push(obj);
+    const getCourses = async () => {
+      console.log("Acquiring courses...", user.value.uid);
+      try {
+        const res = await api.post("/faculty", {
+          facID: user.value.uid,
+        });
+        const courseIds = res.data.coursesHandled.map(
+          (course) => course.courseID
+        );
+        for (let i = 0; i < courseIds.length; i++) {
+          const res2 = await api.post("/courses/courseID", {
+            courseID: courseIds[i],
+          });
+          const course = {
+            ...res2.data.info,
+            isStudent: false,
+            identicon: generateIdenticon(res2.data.info.courseName),
+          };
+          subjects.value = [...subjects.value, course];
+        }
+      } catch (error) {
+        console.log("Error while obtaining courses from backend ", error);
       }
+    };
 
-      this.courses = courses;
+    watchEffect(() => {
+      if (isLoggedIn.value) {
+        getCourses();
+      }
+    });
 
-      const res = await api.post("/faculty", { facID: this.user.uid });
-      console.log(res);
-    },
+    return { subjects };
   },
 };
 </script>

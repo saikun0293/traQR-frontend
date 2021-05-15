@@ -48,7 +48,7 @@
 
 <script>
 import Icon from "./modules/login/LoginUtils";
-// import api from "@/api";
+import api from "@/api";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -97,6 +97,8 @@ export default {
             regNo: family_name,
             studentName: given_name,
             isStudent: true,
+            facID: null,
+            facultyName: null,
           };
         } else {
           //Create a faculty account
@@ -104,13 +106,18 @@ export default {
             isStudent: false,
             facID: id,
             facultyName: name,
+            regNo: null,
+            studentName: null,
           };
         }
 
         console.log("Data I want to send", data);
-        //send data to backend
-        // const res = await api.post("/newUser", data);
-        // console.log("Response for creating new user from backend", res);
+
+        try {
+          await api.post("/newUser", data);
+        } catch (error) {
+          console.log("Error while creating a new user", error);
+        }
       }
 
       this.$router.push("/");
