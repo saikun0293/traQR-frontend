@@ -94,7 +94,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 ::-webkit-scrollbar {
   background-color: white;
   border-radius: 20px;

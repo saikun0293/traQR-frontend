@@ -63,6 +63,9 @@ export default {
         const courseIds = res.data.coursesHandled.map(
           (course) => course.courseID
         );
+
+        const c = [];
+
         for (let i = 0; i < courseIds.length; i++) {
           const res2 = await api.post("/courses/courseID", {
             courseID: courseIds[i],
@@ -72,8 +75,10 @@ export default {
             isStudent: false,
             identicon: generateIdenticon(res2.data.info.courseName),
           };
-          subjects.value = [...subjects.value, course];
+          c.push(course);
         }
+
+        subjects.value = c;
       } catch (error) {
         console.log("Error while obtaining courses from backend ", error);
       }
