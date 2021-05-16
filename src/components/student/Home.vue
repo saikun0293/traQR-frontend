@@ -39,7 +39,7 @@
           <div
             class="font-bold bg-myRed text-white text-4xl grid place-items-center"
           >
-            {{ subject.attendancePercent }}%
+            {{ Math.ceil(subject.attendancePercent) }}%
           </div>
         </div>
       </div>

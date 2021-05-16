@@ -98,4 +98,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+::-webkit-scrollbar {
+  background-color: white;
+  border-radius: 20px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #454851;
+  border-radius: 20px;
+}
+</style>

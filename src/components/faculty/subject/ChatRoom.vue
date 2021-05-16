@@ -14,7 +14,9 @@
         <div class="bg-myLightBlack relative rounded-lg p-4 py-5">
           <div class="text-sm">{{ message?.message }}</div>
           <div
-            @click="markDoubt(message.id, message.markedDoubt, index)"
+            @click="
+              markDoubt(message.id, message.markedDoubt, index, message.message)
+            "
             class="absolute -right-10 top-1/2"
           >
             <Icon :name="message.markedDoubt ? 'tickDark' : 'tickLight'" />
@@ -108,7 +110,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Icon from "@/components/faculty/facIcons";
-// import api from "@/api";
+import api from "@/api";
 
 import { mapState } from "vuex";
 
@@ -239,7 +241,7 @@ export default {
         );
       }
     },
-    async markDoubt(id, marked, index) {
+    async markDoubt(id, marked, index, doubt) {
       if (!marked) {
         try {
           const messageRef = firebase
@@ -254,8 +256,11 @@ export default {
 
           this.messages[index].markedDoubt = true;
 
-          //TODO: Add doubts later
-          // const res = api.post("/doubts",{})
+          await api.post("/addDoubt", {
+            facID: this.user.uid,
+            courseID: this.$route.params.id,
+            doubt: doubt,
+          });
         } catch (error) {
           console.log(
             "Error while trying to add comment to message in firestore",

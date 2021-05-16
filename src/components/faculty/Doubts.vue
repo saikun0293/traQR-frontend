@@ -3,10 +3,14 @@
     <div class="text-center text-3xl pt-10 pb-2 font-extralight text-white">
       Doubts
     </div>
-    <div class="h-l3 overflow-y-auto">
-      <div v-for="doubt in doubts" :key="doubt.courseID" class="bg-myMildBlack">
-        <div>{{ doubt.courseName }}</div>
-        <div>{{ doubt.doubt }}</div>
+    <div class="h-l3 w-2/3 m-auto overflow-y-auto mt-5">
+      <div
+        v-for="doubt in doubts"
+        :key="doubt.courseID"
+        class="bg-myMildBlack p-5 rounded-md my-4"
+      >
+        <div class="text-myBlue text-sm">{{ doubt.courseName }}</div>
+        <div class="text-white font-light mt-2">{{ doubt.doubt }}</div>
       </div>
     </div>
   </div>
