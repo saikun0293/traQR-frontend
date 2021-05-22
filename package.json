@@ -19,6 +19,7 @@
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
+    "vue-json-csv": "^1.2.12",
     "vue-router": "^4.0.5",
     "vuex": "^4.0.0"
   },

@@ -1,12 +1,12 @@
-import { createStore } from "vuex";
-import auth from "./auth";
-import courses from "./courses";
+import { createStore } from 'vuex'
+import auth from './auth'
+import courses from './courses'
 
 const store = createStore({
   modules: {
     auth: auth,
-    courses: courses,
-  },
-});
+    courses: courses
+  }
+})
 
-export default store;
+export default store

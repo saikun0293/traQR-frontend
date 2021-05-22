@@ -23,20 +23,30 @@
         <label for="to">To Time</label>
         <input v-model="to" type="time" name="to" id="to" />
       </div>
-      <button
-        @click="startClass()"
-        class="bg-myBlue text-white px-10 py-2 rounded-lg"
-      >
-        Start Class
-      </button>
+      <div class="flex justify-around w-full text-sm">
+        <button
+          @click="startClass()"
+          class="bg-myBlue text-white px-4 py-2 rounded-lg"
+        >
+          Start Class
+        </button>
+        <button
+          @click="endClass()"
+          class="bg-myRed text-white px-4 py-2 rounded-lg"
+        >
+          End Class
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { mapState } from "vuex";
 import { useRoute } from "vue-router";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 export default {
   computed: {
@@ -44,6 +54,7 @@ export default {
       user: (state) => state.auth.user,
     }),
   },
+  emits: ["enable", "disable"],
   setup(props, { emit }) {
     const route = useRoute();
 
@@ -51,42 +62,92 @@ export default {
     const from = ref(null);
     const to = ref(null);
 
-    const generateQR = () => {
+    const started = ref(null);
+    const remaining = ref(null);
+
+    const classRef = firebase
+      .firestore()
+      .collection("classes")
+      .doc(route.params.id);
+
+    classRef.onSnapshot((doc) => {
+      const data = doc.data();
+      started.value = data.started;
+      qrcode.value = data.qrlink;
+      from.value = data.from;
+      to.value = data.to;
+    });
+
+    const stopWatching = watch(started, () => {
+      if (started.value) {
+        emit("enable", null);
+        stopWatching();
+      }
+    });
+
+    const formatDate = (date) => {
+      var d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    };
+
+    const generateQR = async () => {
       if (from.value && to.value) {
+        const today = formatDate(new Date());
+        const f = today + " " + from.value + ":00";
+        const t = today + " " + to.value + ":00";
+        console.log(f, t);
         const cid = route.params.id;
-        qrcode.value = `https://api.qrserver.com/v1/create-qr-code/?data="${cid};${from.value};${to.value}"&size=200x200`;
+        qrcode.value = `https://api.qrserver.com/v1/create-qr-code/?data="${cid};${f};${t}"&size=200x200`;
+
+        try {
+          // Storing the qrcode as long as class is running
+
+          classRef.set(
+            {
+              qrlink: qrcode.value,
+              from: from.value,
+              to: to.value,
+            },
+            { merge: true }
+          );
+        } catch (error) {
+          console.log("Error while storing the qrcode details in firebase");
+        }
       }
     };
 
     const startClass = () => {
-      emit("enable", null);
-      setTimer();
+      // Is class already running?
+      if (started.value) {
+        window.alert("Class has already started!");
+      } else {
+        classRef.set(
+          {
+            started: true,
+            startedTime: new Date(),
+          },
+          { merge: true }
+        );
+        emit("enable", null);
+      }
     };
 
-    const setTimer = () => {
-      Date.prototype.addHours = function(h) {
-        this.setHours(this.getHours() + h);
-        return this;
-      };
-
-      const countdown = new Date().addHours(1);
-      // const countdown = new Date(new Date().getTime() + 5000);
-      console.log("countdown in 5 seconds", countdown);
-
-      const stop = setInterval(function() {
-        let now = new Date().getTime();
-        console.log("second passed");
-        let distance = countdown - now;
-
-        if (distance < 0) {
-          emit("disable", null);
-          console.log("done with 5 seconds");
-          clearInterval(stop);
-        }
-      }, 1000);
+    const endClass = () => {
+      //overwrite the document
+      classRef.set({
+        started: false,
+      });
+      emit("disable", null);
     };
 
-    return { generateQR, qrcode, from, to, startClass };
+    return { generateQR, qrcode, from, to, startClass, remaining, endClass };
   },
 };
 </script>

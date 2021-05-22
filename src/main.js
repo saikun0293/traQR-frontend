@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './views/App.vue'
 import router from './router'
 import store from './store'
+import JsonCSV from 'vue-json-csv'
 
 import firebase from 'firebase/app'
 import './assets/tailwind.css'
@@ -21,4 +22,5 @@ firebase.initializeApp(firebaseConfig)
 createApp(App)
   .use(router)
   .use(store)
+  .component('downloadCsv', JsonCSV)
   .mount('#app')

@@ -72,9 +72,10 @@
               type="text"
               placeholder="Add a comment"
               v-model="newComment"
-              class="px-3 rounded-lg text-sm focus:outline-none w-full text-gray-700"
+              class="px-3 rounded-lg text-sm focus:outline-none w-full text-gray-700 py-2"
             />
             <button
+              v-if="enabled"
               type="submit"
               @click="submitComment(message.id)"
               class="grid place-items-center bg-myBlue w-8 h-8 rounded-full ml-5 hover:bg-myRed focus:outline-none"
@@ -186,7 +187,7 @@ export default {
         const db = firebase
           .firestore()
           .collection("chatrooms")
-          .doc(`${this.$route.params.id}`)
+          .doc(this.$route.params.id)
           .collection("messages");
 
         const res = await db.add({

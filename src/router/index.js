@@ -1,14 +1,14 @@
-import { createWebHistory, createRouter } from "vue-router";
-import login from "../components/LoginPage";
-import home from "../views/Home";
+import { createWebHistory, createRouter } from 'vue-router'
+import login from '../components/LoginPage'
+import home from '../views/Home'
 import {
   Student,
   StudentHome,
   StudentGeneral,
   StudentQRCode,
   StudentChatRoom,
-  StudentSubject,
-} from "./student";
+  StudentSubject
+} from './student'
 import {
   Faculty,
   FacultyChatRoom,
@@ -18,95 +18,95 @@ import {
   FacultyNewClass,
   FacultyQRCode,
   FacultyStats,
-  FacultySubject,
-} from "./faculty";
+  FacultySubject
+} from './faculty'
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: login,
+    path: '/login',
+    name: 'login',
+    component: login
   },
   {
-    path: "/",
-    name: "home",
+    path: '/',
+    name: 'home',
     component: home,
     children: [
       {
-        path: "student",
+        path: 'student',
         component: Student,
         children: [
           {
-            path: "",
-            component: StudentHome,
+            path: '',
+            component: StudentHome
           },
           {
-            path: ":id",
+            path: ':id',
             component: StudentSubject,
             children: [
               {
-                path: "",
-                component: StudentGeneral,
+                path: '',
+                component: StudentGeneral
               },
               {
-                path: "qrcode",
-                component: StudentQRCode,
+                path: 'qrcode',
+                component: StudentQRCode
               },
               {
-                path: "chatroom",
-                component: StudentChatRoom,
-              },
-            ],
-          },
-        ],
+                path: 'chatroom',
+                component: StudentChatRoom
+              }
+            ]
+          }
+        ]
       },
       {
-        path: "faculty",
+        path: 'faculty',
         component: Faculty,
         children: [
           {
-            path: "",
-            component: FacultyHome,
+            path: '',
+            component: FacultyHome
           },
           {
-            path: "stats",
-            component: FacultyStats,
+            path: 'stats',
+            component: FacultyStats
           },
           {
-            path: "doubts",
-            component: FacultyDoubts,
+            path: 'doubts',
+            component: FacultyDoubts
           },
           {
-            path: "newclass",
-            component: FacultyNewClass,
+            path: 'newclass',
+            component: FacultyNewClass
           },
           {
-            path: ":id",
+            path: ':id',
             component: FacultySubject,
             children: [
               {
-                path: "",
-                component: FacultyGeneral,
+                path: '',
+                component: FacultyGeneral
               },
               {
-                path: "qrcode",
-                component: FacultyQRCode,
+                path: 'qrcode',
+                component: FacultyQRCode
               },
               {
-                path: "chatroom",
-                component: FacultyChatRoom,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+                path: 'chatroom',
+                component: FacultyChatRoom
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router

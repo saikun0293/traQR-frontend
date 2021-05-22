@@ -64,9 +64,10 @@
               type="text"
               placeholder="Add a comment"
               v-model="newComment"
-              class="px-3 rounded-lg text-sm focus:outline-none w-full text-gray-700"
+              class="px-3 rounded-lg text-sm focus:outline-none w-full text-gray-700 py-2"
             />
             <button
+              v-if="started"
               type="submit"
               @click="submitComment(message.id)"
               class="grid place-items-center bg-myBlue w-8 h-8 rounded-full ml-5 hover:bg-myRed focus:outline-none"
@@ -86,6 +87,7 @@
         placeholder="Add a message"
       />
       <button
+        v-if="started"
         class="bg-myBlue w-10 p-3"
         @click="onSubmitMessage()"
         :disabled="toggleButton"
@@ -110,6 +112,16 @@ export default {
   components: { Icon },
   mounted() {
     this.getPreviousChats();
+
+    const classRef = firebase
+      .firestore()
+      .collection("classes")
+      .doc(this.$route.params.id);
+
+    classRef.onSnapshot((doc) => {
+      const data = doc.data();
+      this.started = data.started;
+    });
   },
   props: ["enabled"],
   computed: {
@@ -133,6 +145,7 @@ export default {
       messages: [],
       placeholder: "Add a mess",
       newComment: "",
+      started: "",
     };
   },
   methods: {
