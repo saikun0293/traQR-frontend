@@ -14,13 +14,14 @@
         <div class="bg-myLightBlack relative rounded-lg p-4 py-5">
           <div class="text-sm">{{ message?.message }}</div>
           <div
+            @click="toggleUpvoteMessage(message.id)"
             :class="[
               message.isStudent ? 'bg-myRed' : 'bg-myBlue',
-              'absolute -top-3 -right-3  w-10 h-10 rounded-full grid place-items-center grid-cols-2 px-2',
+              'absolute -top-3 -right-3  w-10 h-10 rounded-full grid place-items-center grid-cols-2 px-2 cursor-pointer',
             ]"
           >
             <span><Icon name="upvote"/></span>
-            <span class="text-xs">{{ message?.upvotes }}</span>
+            <span class="text-xs">{{ message?.upvotes.length }}</span>
           </div>
           <div class="absolute bottom-1 right-1 cursor-pointer">
             <div @click="toggleComments(message.id)">
@@ -46,17 +47,6 @@
             </div>
             <div class="bg-myLightBlack relative rounded-lg p-4 py-5">
               <div class="text-sm">{{ comment?.comment }}</div>
-              <div
-                :class="[
-                  message.isStudent ? 'bg-myRed' : 'bg-myBlue',
-                  'absolute -top-3 -right-3  w-9 h-9 rounded-full grid place-items-center grid-cols-2 px-2',
-                ]"
-              >
-                <span><Icon name="upvote"/></span>
-                <span class="text-xs">{{
-                  comment.upvotes === undefined ? 0 : comment.upvotes
-                }}</span>
-              </div>
             </div>
           </div>
           <div class="flex py-4">
@@ -149,6 +139,17 @@ export default {
     };
   },
   methods: {
+    async toggleUpvoteMessage(id) {
+      const db = firebase
+        .firestore()
+        .collection("chatrooms")
+        .doc(`${this.$route.params.id}`)
+        .collection("messages");
+      const messageRef = db.doc(id);
+      await messageRef.update({
+        upvotes: firebase.firestore.FieldValue.arrayUnion(this.user.uid),
+      });
+    },
     async getPreviousChats() {
       try {
         const db = firebase
