@@ -34,56 +34,12 @@
         </button>
       </div>
     </div>
-    <!-- QR Code -->
-    <!-- <div
-      class="flex w-2/3 mx-auto my-10 justify-around bg-myBlue m-auto p-5 rounded-lg"
-    >
-      <div class="bg-white w-60 h-60 rounded-lg relative">
-        <div class="">
-          <img v-if="qrlink !== null" :src="qrlink" alt="qr-code" />
-        </div>
-        <button
-          class="generate-btn"
-          :disabled="!classGenerated"
-          @click="generateQR()"
-        >
-          Generate QR Code
-        </button>
-      </div>
-      <div class="bg-white rounded-lg w-80">
-        <div class="text-2xl text-myBlue text-center my-6">
-          QR Code Details
-        </div>
-        <div
-          class="grid grid-cols-2 text-black w-64 m-auto place-items-center gap-y-6"
-        >
-          <label for="from" style="font-size:17px">From Time</label>
-          <input
-            class="bg-myGrey text-gray-600 px-4 py-2 rounded-md focus:outline-none"
-            v-model="from"
-            type="time"
-            name="from"
-            id="from"
-          />
-          <label for="to" style="font-size:17px">To Time</label>
-          <input
-            class="bg-myGrey text-gray-600 px-4 py-2 rounded-md focus:outline-none"
-            v-model="to"
-            type="time"
-            name="to"
-            id="to"
-          />
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import api from "@/api";
-import firebase from "firebase/app";
-import "firebase/firestore";
 
 export default {
   computed: mapState({
@@ -123,21 +79,8 @@ export default {
           error
         );
       }
-    },
-    async generateQR() {
-      // Creating courseID
-      const courseID = this.courseDetails.courseID;
-      // Generating the qr code link
-      this.qrlink = `https://api.qrserver.com/v1/create-qr-code/?data="${courseID};${this.from};${this.to}"&size=150x150`;
 
-      const db = firebase
-        .firestore()
-        .collection("qrcodes")
-        .doc(courseID);
-
-      db.add({
-        currentQRLink: this.qrlink,
-      });
+      this.$router.push("/faculty");
     },
   },
 };
