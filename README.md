@@ -1,24 +1,8 @@
-# traqr-frontend
+# TraQR
+Attendance system for online classes using QR codes. Yep, you guessed it right. Was a university project :|
 
-## Project setup
-```
-npm install
-```
+<br/>
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![image](https://github.com/user-attachments/assets/23fb2c51-5354-47c0-8657-cd8dfb4046cd)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Meanwhile checkout the design I worked on for this project [here](https://www.figma.com/proto/ucEVwi2ZY32uc6Q1ZZjXJf/traQR?page-id=0%3A1&node-id=1-2&viewport=87%2C270%2C0.18&t=q8Hq0P8WtN4hitku-1&scaling=min-zoom&content-scaling=fixed)
